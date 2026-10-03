@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Vida - Steven Fuentes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="cv-wrapper">
+    <!-- COLUMNA LATERAL: IDENTIDAD Y DATOS PERSONALES -->
+    <aside class="sidebar">
+        <div class="profile-header">
+            <div class="avatar-ring">
+                <div class="avatar-initials">SF</div>
+            </div>
+            <div class="name-box">
+                <h1>Steven Bladimir<br><span>Fuentes Medina</span></h1>
+                <p class="subtitle">ESTUDIANTE DE INGENIERÍA EN COMPUTACIÓN • 7MO SEMESTRE</p>
+            </div>
+        </div>
+
+        <div class="sidebar-content">
+            <h2 class="sidebar-title">DATOS PERSONALES</h2>
+            <div class="data-list">
+                <div class="data-row">
+                    <span class="label">Nombres</span>
+                    <span class="value">Steven Bladimir</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Apellidos</span>
+                    <span class="value">Fuentes Medina</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Cédula de Ciudadanía</span>
+                    <span class="value">0401832886</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Nacionalidad</span>
+                    <span class="value">Ecuatoriano</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Estado Civil</span>
+                    <span class="value">Soltero</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Teléfono</span>
+                    <span class="value">0987141916</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Correo Electrónico</span>
+                    <span class="value">steven.centinel@gmail.com</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Dirección Domicilio</span>
+                    <span class="value">Tulcán: Barrio Puerto Libre El Norte, Vivienda Popular</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- COLUMNA PRINCIPAL: ESTUDIOS, TÍTULO Y CERTIFICADOS -->
+    <main class="main-panel">
+        <!-- SECCIÓN: ESTUDIOS REALIZADOS -->
+        <section class="cv-section">
+            <div class="section-header">
+                <h2>ESTUDIOS REALIZADOS</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-card highlight-card">
+                    <span class="stage-badge">SUPERIOR • EN CURSO</span>
+                    <h3>Ingeniería en Computación (7mo Semestre)</h3>
+                    <p class="institution">Universidad Politécnica Estatal del Carchi (UPEC)</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="stage-badge">SECUNDARIA</span>
+                    <h3>Educación Secundaria</h3>
+                    <p class="institution">Unidad Educativa General Julio Andrade</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="stage-badge">PRIMARIA</span>
+                    <h3>Educación Primaria</h3>
+                    <p class="institution">Unidad Educativa Fiscomisional Medalla Milagrosa Bolívar</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: TÍTULO OBTENIDO -->
+        <section class="cv-section">
+            <div class="section-header">
+                <h2>TÍTULO OBTENIDO</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="degree-banner">
+                <div class="degree-icon">&#9881;</div>
+                <div class="degree-info">
+                    <span>TÍTULO TÉCNICO</span>
+                    <h3>Técnico Industrial en Electromecánica Automotriz</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CURSOS REALIZADOS (5 CERTIFICADOS) -->
+        <section class="cv-section">
+            <div class="section-header">
+                <h2>CURSOS REALIZADOS</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="filter-bar">
+                <button type="button" class="filter-btn active" onclick="filterCerts('all', this)">Todos (5)</button>
+                <button type="button" class="filter-btn" onclick="filterCerts('ia', this)">Inteligencia Artificial (4)</button>
+                <button type="button" class="filter-btn" onclick="filterCerts('sec', this)">Ciberseguridad (1)</button>
+            </div>
+
+            <div class="certs-grid" id="certs-list">
+                <div class="cert-item" data-cat="ia">
+                    <span class="cert-number">01</span>
+                    <div class="cert-text">
+                        <h4>Certificado de Iniciación al Desarrollo con IA</h4>
+                        <span>Área: Inteligencia Artificial &amp; Desarrollo</span>
+                    </div>
+                </div>
+
+                <div class="cert-item" data-cat="ia">
+                    <span class="cert-number">02</span>
+                    <div class="cert-text">
+                        <h4>Certificado de Curso de Iniciación a la IA, el Nuevo ChatGPT</h4>
+                        <span>Área: Inteligencia Artificial Generativa</span>
+                    </div>
+                </div>
+
+                <div class="cert-item" data-cat="ia">
+                    <span class="cert-number">03</span>
+                    <div class="cert-text">
+                        <h4>Certificado de Asistencia a Curso de IA. Domina la IA</h4>
+                        <span>Área: Inteligencia Artificial Aplicada</span>
+                    </div>
+                </div>
+
+                <div class="cert-item" data-cat="ia">
+                    <span class="cert-number">04</span>
+                    <div class="cert-text">
+                        <h4>Certificado en Inteligencia Artificial Aplicada y Productividad</h4>
+                        <span>Área: Inteligencia Artificial</span>
+                    </div>
+                </div>
+
+                <div class="cert-item" data-cat="sec">
+                    <span class="cert-number">05</span>
+                    <div class="cert-text">
+                        <h4>Certificado de Curso de Ciberseguridad y Hacking Ético</h4>
+                        <span>Área: Seguridad Informática</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function filterCerts(category, btnElement) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+        btnElement.classList.add('active');
+
+        var items = document.querySelectorAll('#certs-list .cert-item');
+        for (var j = 0; j < items.length; j++) {
+            if (category === 'all' || items[j].getAttribute('data-cat') === category) {
+                items[j].style.display = 'flex';
+            } else {
+                items[j].style.display = 'none';
+            }
+        }
+    }
+
+    function toggleThemeFromFlutter() {
+        document.body.classList.toggle('alt-theme');
+    }
+</script>
+</body>
+</html>
