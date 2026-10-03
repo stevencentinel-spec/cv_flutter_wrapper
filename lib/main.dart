@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'webview_web_stub.dart'
+if (dart.library.html) 'webview_web_impl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,39 +36,56 @@ class CvWebViewScreen extends StatefulWidget {
 }
 
 class _CvWebViewScreenState extends State<CvWebViewScreen> {
-  late final WebViewController controller;
+  WebViewController? controller;
   bool isLoading = true;
+  bool isDarkTheme = false;
+  String viewId = 'cv-webview-0';
+  int reloadCounter = 0;
 
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0xFF22262F))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (_) {
-            if (mounted) {
-              setState(() => isLoading = false);
-            }
-          },
-        ),
-      );
-
+    if (!kIsWeb) {
+      controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0xFF1C2128))
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onPageFinished: (_) {
+              if (mounted) setState(() => isLoading = false);
+            },
+          ),
+        );
+    }
     _loadLocalWebFiles();
   }
 
-  Future<void> _loadLocalWebFiles() async {
+  Future<void> _loadLocalWebFiles({bool toggleTheme = false}) async {
     setState(() => isLoading = true);
-    final String htmlFile = await rootBundle.loadString('assets/web/index.html');
+    if (toggleTheme) {
+      isDarkTheme = !isDarkTheme;
+    }
+
+    String htmlFile = await rootBundle.loadString('assets/web/index.html');
     final String cssFile = await rootBundle.loadString('assets/web/style.css');
 
-    final String combinedHtml = htmlFile.replaceFirst(
+    htmlFile = htmlFile.replaceFirst(
       '<link rel="stylesheet" href="style.css">',
       '<style>$cssFile</style>',
     );
 
-    await controller.loadHtmlString(combinedHtml);
+    if (isDarkTheme) {
+      htmlFile = htmlFile.replaceFirst('<body>', '<body class="alt-theme">');
+    }
+
+    if (kIsWeb) {
+      reloadCounter++;
+      viewId = 'cv-webview-$reloadCounter';
+      registerWebIframe(htmlFile, viewId);
+      if (mounted) setState(() => isLoading = false);
+    } else {
+      await controller?.loadHtmlString(htmlFile);
+    }
   }
 
   @override
@@ -75,44 +96,41 @@ class _CvWebViewScreenState extends State<CvWebViewScreen> {
           'Hoja de Vida • UPEC',
           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
         ),
-        backgroundColor: const Color(0xFF22262F),
+        backgroundColor: const Color(0xFF1C2128),
         foregroundColor: Colors.white,
         elevation: 1,
         actions: [
           IconButton(
-            tooltip: 'Cambiar contraste',
+            tooltip: 'Cambiar contraste (Modo Claro/Oscuro)',
             icon: const Icon(Icons.contrast),
             onPressed: () {
-              controller.runJavaScript('toggleThemeFromFlutter();');
+              if (kIsWeb) {
+                _loadLocalWebFiles(toggleTheme: true);
+              } else {
+                controller?.runJavaScript('toggleThemeFromFlutter();');
+              }
             },
           ),
           IconButton(
             tooltip: 'Recargar CV',
             icon: const Icon(Icons.refresh),
-            onPressed: _loadLocalWebFiles,
+            onPressed: () => _loadLocalWebFiles(toggleTheme: false),
           ),
         ],
       ),
       body: Stack(
         children: [
-          WebViewWidget(controller: controller),
+          if (kIsWeb)
+            buildWebIframe(viewId)
+          else if (controller != null)
+            WebViewWidget(controller: controller!),
           if (isLoading)
             const Center(
               child: CircularProgressIndicator(
-                color: Color(0xFFC59B27),
+                color: Color(0xFFB89146),
               ),
             ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFFC59B27),
-        tooltip: 'Subir al inicio',
-        onPressed: () {
-          controller.runJavaScript(
-            'window.scrollTo({top: 0, behavior: "smooth"});',
-          );
-        },
-        child: const Icon(Icons.keyboard_arrow_up, color: Colors.white),
       ),
     );
   }
